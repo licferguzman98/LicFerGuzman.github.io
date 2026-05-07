@@ -1,0 +1,1384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lic. Fernando Guzmán — Psicólogo Clínico</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --black:   #111315;
+      --stone:   #1C1F22;
+      --parch:   #D8CBB8;
+      --sand:    #BFA98A;
+      --forest:  #4E5B4F;
+      --smoke:   #5C6B73;
+      --offwhite:#F3EFE8;
+      --dim:     rgba(216,203,184,.55);
+      --dimmer:  rgba(216,203,184,.3);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: 'Manrope', sans-serif;
+      background: var(--black);
+      color: var(--parch);
+      overflow-x: hidden;
+    }
+
+    /* ─── GRAIN OVERLAY ─────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed; inset: 0; z-index: 0;
+      pointer-events: none;
+      opacity: .03;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    /* ─── NAV ───────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.6rem 6%;
+      transition: background .4s, border-color .4s;
+    }
+    nav.scrolled {
+      background: rgba(17,19,21,.88);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(216,203,184,.08);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      font-weight: 500;
+      letter-spacing: .12em;
+      color: var(--parch);
+      text-transform: uppercase;
+    }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a {
+      font-size: .72rem;
+      font-weight: 500;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--dim);
+      transition: color .3s;
+    }
+    .nav-links a:hover { color: var(--parch); }
+    .nav-cta {
+      font-size: .72rem;
+      font-weight: 600;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--black);
+      background: var(--parch);
+      padding: .6rem 1.4rem;
+      transition: background .3s, color .3s;
+    }
+    .nav-cta:hover { background: var(--sand); }
+
+    /* ─── HERO ──────────────────────────────────── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: flex-end;
+      padding: 0 6% 8rem;
+      overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 70% at 65% 40%, #2a3d2e 0%, #111315 60%);
+      z-index: 1;
+    }
+    .hero-bg::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, rgba(17,19,21,0) 40%, rgba(17,19,21,.97) 100%);
+    }
+    .hero-orb {
+      position: absolute;
+      top: 15%; right: 8%;
+      width: 420px; height: 420px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(78,91,79,.35) 0%, transparent 70%);
+      filter: blur(60px);
+      z-index: 2;
+    }
+    .hero-content {
+      position: relative; z-index: 3;
+      max-width: 760px;
+    }
+    .hero-eyebrow {
+      display: flex; align-items: center; gap: 1rem;
+      font-size: .7rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--forest);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp .9s .2s ease forwards;
+    }
+    .hero-eyebrow::before {
+      content: '';
+      display: block;
+      width: 32px; height: 1px;
+      background: var(--forest);
+    }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(3.2rem, 6.5vw, 7rem);
+      font-weight: 300;
+      line-height: 1.0;
+      letter-spacing: -.01em;
+      color: var(--offwhite);
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp .9s .4s ease forwards;
+    }
+    .hero-title em { font-style: italic; color: var(--sand); }
+    .hero-subtitle {
+      font-size: 1rem;
+      font-weight: 300;
+      line-height: 1.8;
+      color: var(--dim);
+      max-width: 480px;
+      margin-bottom: 3rem;
+      opacity: 0;
+      animation: fadeUp .9s .6s ease forwards;
+    }
+    .hero-actions {
+      display: flex; align-items: center; gap: 2rem;
+      opacity: 0;
+      animation: fadeUp .9s .8s ease forwards;
+    }
+    .btn-hero {
+      font-family: 'Manrope', sans-serif;
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 1rem 2.4rem;
+      background: var(--parch);
+      color: var(--black);
+      transition: background .3s, transform .3s;
+      display: inline-block;
+    }
+    .btn-hero:hover { background: var(--offwhite); transform: translateY(-2px); }
+    .btn-ghost {
+      font-size: .75rem;
+      font-weight: 500;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: var(--dim);
+      display: flex; align-items: center; gap: .6rem;
+      transition: color .3s;
+    }
+    .btn-ghost::after { content: '↓'; font-size: 1rem; }
+    .btn-ghost:hover { color: var(--parch); }
+    .hero-scroll-line {
+      position: absolute;
+      bottom: 3rem; right: 6%;
+      z-index: 3;
+      display: flex; flex-direction: column; align-items: center; gap: .6rem;
+    }
+    .hero-scroll-line span {
+      font-size: .65rem;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: rgba(216,203,184,.3);
+      writing-mode: vertical-rl;
+    }
+    .hero-scroll-line::after {
+      content: '';
+      width: 1px; height: 60px;
+      background: linear-gradient(to bottom, rgba(216,203,184,.3), transparent);
+    }
+
+    /* ─── INTRO BAND ────────────────────────────── */
+    .intro-band {
+      background: var(--stone);
+      padding: 3rem 6%;
+      border-top: 1px solid rgba(216,203,184,.07);
+      border-bottom: 1px solid rgba(216,203,184,.07);
+    }
+    .intro-band-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+    .intro-band p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.3rem;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--parch);
+      max-width: 600px;
+      line-height: 1.7;
+    }
+    .intro-band-meta {
+      display: flex; flex-direction: column; gap: .5rem;
+      flex-shrink: 0;
+      text-align: right;
+    }
+    .intro-band-meta span {
+      font-size: .7rem;
+      letter-spacing: .15em;
+      text-transform: uppercase;
+      color: rgba(216,203,184,.4);
+    }
+    .intro-band-meta strong {
+      font-size: .82rem;
+      font-weight: 500;
+      color: var(--parch);
+      letter-spacing: .05em;
+    }
+
+    /* ─── SECTIONS BASE ─────────────────────────── */
+    section { padding: 7rem 6%; position: relative; z-index: 1; }
+    .sec-label {
+      display: flex; align-items: center; gap: .8rem;
+      font-size: .68rem;
+      letter-spacing: .22em;
+      text-transform: uppercase;
+      color: var(--forest);
+      margin-bottom: 2rem;
+    }
+    .sec-label::before {
+      content: '';
+      width: 24px; height: 1px;
+      background: var(--forest);
+    }
+    .sec-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.4rem, 4vw, 4.2rem);
+      font-weight: 300;
+      line-height: 1.1;
+      letter-spacing: -.01em;
+      color: var(--offwhite);
+      margin-bottom: 1.5rem;
+    }
+    .sec-title em { font-style: italic; color: var(--sand); }
+    .sec-rule {
+      width: 40px; height: 1px;
+      background: rgba(216,203,184,.2);
+      margin-bottom: 3rem;
+    }
+
+    /* ─── ABOUT ─────────────────────────────────── */
+    #sobre-mi { background: var(--black); }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1.1fr;
+      gap: 6rem;
+      align-items: start;
+    }
+    .about-photo-wrap {
+      position: relative;
+    }
+    .about-photo-box {
+      width: 100%;
+      aspect-ratio: 3/4;
+      background: var(--stone);
+      position: relative;
+      overflow: hidden;
+    }
+    .about-photo-box img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: grayscale(20%);
+    }
+    .about-photo-placeholder {
+      width: 100%; height: 100%;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 1rem;
+      background: linear-gradient(160deg, #1c2420 0%, #1C1F22 100%);
+    }
+    .about-photo-placeholder span:first-child {
+      font-size: 3rem;
+      opacity: .3;
+    }
+    .about-photo-placeholder span:last-child {
+      font-size: .68rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(216,203,184,.3);
+    }
+    .about-photo-caption {
+      position: absolute;
+      bottom: -1px; left: -1px; right: -1px;
+      background: linear-gradient(to top, rgba(17,19,21,.9) 0%, transparent 100%);
+      padding: 2rem 1.5rem 1.5rem;
+    }
+    .about-photo-caption p {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-style: italic;
+      color: var(--parch);
+      line-height: 1.5;
+    }
+    .about-accent {
+      position: absolute;
+      top: 1.5rem; right: -1.5rem;
+      width: 80px; height: 80px;
+      border: 1px solid rgba(78,91,79,.4);
+      z-index: -1;
+    }
+    .about-text-col { padding-top: .5rem; }
+    .about-body {
+      font-size: .95rem;
+      font-weight: 300;
+      line-height: 1.95;
+      color: rgba(216,203,184,.7);
+      margin-bottom: 1.4rem;
+    }
+    .about-body strong { color: var(--parch); font-weight: 500; }
+    .about-pull {
+      border-left: 2px solid var(--forest);
+      padding: 1.2rem 1.8rem;
+      margin: 2.5rem 0;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.35rem;
+      font-style: italic;
+      font-weight: 300;
+      color: var(--parch);
+      line-height: 1.6;
+      background: rgba(78,91,79,.08);
+    }
+    .about-tags {
+      display: flex; flex-wrap: wrap; gap: .5rem;
+      margin-top: 2.5rem;
+    }
+    .tag {
+      font-size: .68rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(216,203,184,.6);
+      border: 1px solid rgba(216,203,184,.15);
+      padding: .4rem .9rem;
+      transition: border-color .3s, color .3s;
+    }
+    .tag:hover { border-color: rgba(78,91,79,.6); color: var(--parch); }
+    .cred-row {
+      display: flex; gap: 2rem;
+      margin-top: 3rem;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(216,203,184,.08);
+    }
+    .cred-item { flex: 1; }
+    .cred-item span {
+      display: block;
+      font-size: .65rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: rgba(216,203,184,.35);
+      margin-bottom: .4rem;
+    }
+    .cred-item p {
+      font-size: .88rem;
+      font-weight: 400;
+      color: var(--parch);
+      line-height: 1.5;
+    }
+
+    /* ─── SERVICES ──────────────────────────────── */
+    #servicios {
+      background: var(--stone);
+      border-top: 1px solid rgba(216,203,184,.06);
+    }
+    .services-intro {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      margin-bottom: 4rem;
+      align-items: end;
+    }
+    .services-intro p {
+      font-size: .95rem;
+      font-weight: 300;
+      line-height: 1.9;
+      color: rgba(216,203,184,.6);
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1px;
+      background: rgba(216,203,184,.06);
+    }
+    .service-card {
+      background: var(--stone);
+      padding: 2.8rem 2.2rem;
+      transition: background .3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: var(--forest);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform .4s ease;
+    }
+    .service-card:hover { background: #20242a; }
+    .service-card:hover::before { transform: scaleX(1); }
+    .service-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem;
+      color: rgba(216,203,184,.18);
+      margin-bottom: 1.8rem;
+      font-style: italic;
+    }
+    .service-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.4rem;
+      font-weight: 500;
+      color: var(--offwhite);
+      margin-bottom: .8rem;
+      line-height: 1.2;
+    }
+    .service-card p {
+      font-size: .85rem;
+      font-weight: 300;
+      line-height: 1.85;
+      color: rgba(216,203,184,.55);
+    }
+    .service-meta {
+      margin-top: 2rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid rgba(216,203,184,.08);
+      font-size: .68rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--forest);
+    }
+
+    /* ─── VIRTUAL ────────────────────────────────── */
+    #virtual {
+      background: var(--black);
+      border-top: 1px solid rgba(216,203,184,.06);
+    }
+    .virtual-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+    .virtual-text p {
+      font-size: .95rem;
+      font-weight: 300;
+      line-height: 1.9;
+      color: rgba(216,203,184,.6);
+      margin-bottom: 1.2rem;
+    }
+    .platform-cards {
+      display: flex; flex-direction: column; gap: 1rem;
+      margin-top: 2.5rem;
+    }
+    .platform-card {
+      display: flex; align-items: center; gap: 1.5rem;
+      padding: 1.4rem 1.8rem;
+      border: 1px solid rgba(216,203,184,.08);
+      background: rgba(28,31,34,.6);
+      transition: border-color .3s, background .3s;
+    }
+    .platform-card:hover {
+      border-color: rgba(78,91,79,.4);
+      background: rgba(78,91,79,.07);
+    }
+    .platform-icon {
+      font-size: 1.6rem;
+      width: 48px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .platform-card h4 {
+      font-size: .9rem;
+      font-weight: 500;
+      color: var(--parch);
+      margin-bottom: .2rem;
+    }
+    .platform-card p {
+      font-size: .8rem;
+      font-weight: 300;
+      color: rgba(216,203,184,.45);
+    }
+    .virtual-visual {
+      position: relative;
+    }
+    .virtual-box {
+      background: linear-gradient(135deg, #1a2420 0%, #1C1F22 100%);
+      border: 1px solid rgba(216,203,184,.08);
+      padding: 3.5rem;
+    }
+    .virtual-box-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.8rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--offwhite);
+      margin-bottom: 1.5rem;
+      line-height: 1.3;
+    }
+    .virtual-steps { display: flex; flex-direction: column; gap: 1.2rem; }
+    .vstep {
+      display: flex; gap: 1rem; align-items: flex-start;
+    }
+    .vstep-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: .85rem;
+      font-style: italic;
+      color: var(--forest);
+      flex-shrink: 0;
+      width: 24px;
+      padding-top: .1rem;
+    }
+    .vstep p {
+      font-size: .85rem;
+      font-weight: 300;
+      color: rgba(216,203,184,.55);
+      line-height: 1.7;
+    }
+    .vstep p strong { color: var(--parch); font-weight: 500; }
+
+    /* ─── BOOKING ────────────────────────────────── */
+    #horarios {
+      background: var(--stone);
+      border-top: 1px solid rgba(216,203,184,.06);
+    }
+    .booking-layout {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+    }
+    .schedule-list { display: flex; flex-direction: column; }
+    .sched-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.1rem 0;
+      border-bottom: 1px solid rgba(216,203,184,.06);
+    }
+    .sched-row:first-child { border-top: 1px solid rgba(216,203,184,.06); }
+    .sched-day {
+      font-size: .8rem;
+      font-weight: 500;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--parch);
+    }
+    .sched-time {
+      font-size: .82rem;
+      font-weight: 300;
+      color: rgba(216,203,184,.5);
+    }
+    .sched-badge {
+      font-size: .65rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: .25rem .7rem;
+    }
+    .badge-open { color: var(--forest); border: 1px solid rgba(78,91,79,.4); }
+    .badge-closed { color: rgba(216,203,184,.25); border: 1px solid rgba(216,203,184,.1); }
+    .booking-note {
+      margin-top: 2rem;
+      padding: 1.5rem;
+      background: rgba(78,91,79,.1);
+      border-left: 2px solid var(--forest);
+      font-size: .82rem;
+      font-weight: 300;
+      color: rgba(216,203,184,.6);
+      line-height: 1.7;
+    }
+    .booking-form {
+      display: flex; flex-direction: column; gap: 1rem;
+    }
+    .booking-form-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--offwhite);
+      margin-bottom: .5rem;
+    }
+    .booking-form p {
+      font-size: .85rem;
+      font-weight: 300;
+      color: rgba(216,203,184,.5);
+      margin-bottom: 1rem;
+    }
+    .fld { display: flex; flex-direction: column; gap: .4rem; }
+    .fld label {
+      font-size: .65rem;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: rgba(216,203,184,.4);
+    }
+    .fld input, .fld select, .fld textarea {
+      background: rgba(216,203,184,.04);
+      border: 1px solid rgba(216,203,184,.1);
+      color: var(--parch);
+      font-family: 'Manrope', sans-serif;
+      font-size: .88rem;
+      font-weight: 300;
+      padding: .85rem 1rem;
+      outline: none;
+      transition: border-color .3s;
+      width: 100%;
+    }
+    .fld input::placeholder, .fld textarea::placeholder { color: rgba(216,203,184,.2); }
+    .fld input:focus, .fld select:focus, .fld textarea:focus {
+      border-color: rgba(78,91,79,.6);
+    }
+    .fld select option { background: var(--stone); color: var(--parch); }
+    .fld textarea { resize: vertical; min-height: 100px; }
+    .btn-submit {
+      margin-top: .5rem;
+      padding: 1rem 2rem;
+      background: var(--parch);
+      color: var(--black);
+      font-family: 'Manrope', sans-serif;
+      font-size: .75rem;
+      font-weight: 600;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: background .3s, transform .3s;
+    }
+    .btn-submit:hover { background: var(--offwhite); transform: translateY(-2px); }
+
+    /* ─── HONORARIOS ─────────────────────────────── */
+    #honorarios {
+      background: var(--black);
+      border-top: 1px solid rgba(216,203,184,.06);
+    }
+    .honor-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: start;
+    }
+    .honor-text p {
+      font-size: .95rem;
+      font-weight: 300;
+      line-height: 1.9;
+      color: rgba(216,203,184,.6);
+      margin-bottom: 1.2rem;
+    }
+    .contact-options { display: flex; flex-direction: column; gap: .8rem; margin-top: 2rem; }
+    .contact-option {
+      display: flex; align-items: center; gap: 1.2rem;
+      padding: 1.2rem 1.5rem;
+      border: 1px solid rgba(216,203,184,.08);
+      text-decoration: none;
+      transition: border-color .3s, background .3s;
+      color: inherit;
+    }
+    .contact-option:hover {
+      border-color: rgba(78,91,79,.4);
+      background: rgba(78,91,79,.06);
+    }
+    .contact-option-icon {
+      width: 40px; height: 40px;
+      background: rgba(78,91,79,.15);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .contact-option h4 {
+      font-size: .85rem;
+      font-weight: 500;
+      color: var(--parch);
+      margin-bottom: .15rem;
+    }
+    .contact-option p {
+      font-size: .78rem;
+      font-weight: 300;
+      color: rgba(216,203,184,.4);
+    }
+    .honor-visual {
+      background: linear-gradient(160deg, #1a2420 0%, var(--stone) 100%);
+      border: 1px solid rgba(216,203,184,.07);
+      padding: 3rem;
+    }
+    .honor-visual-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 300;
+      font-style: italic;
+      color: var(--offwhite);
+      margin-bottom: 2rem;
+      line-height: 1.4;
+    }
+    .honor-items { display: flex; flex-direction: column; gap: 0; }
+    .honor-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1rem 0;
+      border-bottom: 1px solid rgba(216,203,184,.07);
+    }
+    .honor-item:last-child { border-bottom: none; }
+    .honor-item span:first-child {
+      font-size: .82rem;
+      font-weight: 300;
+      color: rgba(216,203,184,.6);
+    }
+    .honor-item span:last-child {
+      font-size: .75rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--forest);
+    }
+    .honor-cta-note {
+      margin-top: 2rem;
+      font-size: .78rem;
+      font-weight: 300;
+      color: rgba(216,203,184,.35);
+      line-height: 1.7;
+    }
+
+    /* ─── CONTACT ────────────────────────────────── */
+    #contacto {
+      background: var(--stone);
+      border-top: 1px solid rgba(216,203,184,.06);
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+    }
+    .contact-left p {
+      font-size: .95rem;
+      font-weight: 300;
+      line-height: 1.9;
+      color: rgba(216,203,184,.55);
+      margin-bottom: 3rem;
+    }
+    .contact-details { display: flex; flex-direction: column; gap: 1.5rem; }
+    .c-detail {
+      display: flex; gap: 1rem; align-items: flex-start;
+    }
+    .c-detail-icon {
+      width: 36px; height: 36px;
+      border: 1px solid rgba(216,203,184,.12);
+      display: flex; align-items: center; justify-content: center;
+      font-size: .9rem;
+      flex-shrink: 0;
+      margin-top: .1rem;
+    }
+    .c-detail span {
+      display: block;
+      font-size: .65rem;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: rgba(216,203,184,.3);
+      margin-bottom: .3rem;
+    }
+    .c-detail a, .c-detail p {
+      font-size: .9rem;
+      font-weight: 400;
+      color: var(--parch);
+      text-decoration: none;
+      transition: color .3s;
+    }
+    .c-detail a:hover { color: var(--offwhite); }
+    .contact-form-wrap { display: flex; flex-direction: column; gap: 1rem; }
+
+    /* ─── FOOTER ─────────────────────────────────── */
+    footer {
+      background: var(--black);
+      border-top: 1px solid rgba(216,203,184,.06);
+      padding: 3rem 6%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .footer-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      font-weight: 500;
+      letter-spacing: .1em;
+      color: rgba(216,203,184,.4);
+    }
+    .footer-copy {
+      font-size: .7rem;
+      letter-spacing: .08em;
+      color: rgba(216,203,184,.2);
+    }
+    .footer-right {
+      font-size: .7rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: rgba(216,203,184,.25);
+    }
+
+    /* ─── ANIMATIONS ─────────────────────────────── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .reveal {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity .8s ease, transform .8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── RESPONSIVE ─────────────────────────────── */
+    @media (max-width: 960px) {
+      .about-grid, .services-intro, .virtual-grid,
+      .booking-layout, .honor-grid, .contact-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .services-grid { grid-template-columns: 1fr; }
+      .intro-band-inner { flex-direction: column; align-items: flex-start; }
+      .intro-band-meta { text-align: left; }
+      nav .nav-links { display: none; }
+      .hero { padding-bottom: 5rem; }
+      footer { flex-direction: column; gap: 1rem; text-align: center; }
+    }
+    .form-feedback {
+      margin-top: .8rem;
+      font-size: .82rem;
+      font-weight: 400;
+      padding: .8rem 1rem;
+    }
+    .form-feedback.success {
+      color: #7fbf8e;
+      border: 1px solid rgba(78,91,79,.4);
+      background: rgba(78,91,79,.08);
+    }
+    .form-feedback.error {
+      color: #c97a6e;
+      border: 1px solid rgba(180,90,80,.3);
+      background: rgba(180,90,80,.06);
+    }
+    .btn-submit:disabled {
+      opacity: .5;
+      cursor: not-allowed;
+      transform: none !important;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="mainNav">
+  <div class="nav-logo">Lic. Fernando Guzmán</div>
+  <ul class="nav-links">
+    <li><a href="#sobre-mi">Sobre mí</a></li>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#virtual">Virtual</a></li>
+    <li><a href="#horarios">Horarios</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+  <a href="#horarios" class="nav-cta">Agendar cita</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-orb"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Psicólogo Clínico y Comunitario · Santa Ana, El Salvador</div>
+    <h1 class="hero-title">
+      Un lugar donde<br>
+      <em>sanar</em> tiene<br>
+      sentido.
+    </h1>
+    <p class="hero-subtitle">
+      Acompañamiento psicológico profesional para quienes atraviesan momentos difíciles. 
+      Un espacio confidencial, sin juicios, diseñado para ti.
+    </p>
+    <div class="hero-actions">
+      <a href="#horarios" class="btn-hero">Reservar sesión</a>
+      <a href="#sobre-mi" class="btn-ghost">Conocer más</a>
+    </div>
+  </div>
+  <div class="hero-scroll-line"><span>Scroll</span></div>
+</section>
+
+<!-- INTRO BAND -->
+<div class="intro-band">
+  <div class="intro-band-inner">
+    <p>"El bienestar emocional no es un destino — es un proceso continuo de escucha, comprensión y crecimiento."</p>
+    <div class="intro-band-meta">
+      <span>Credenciales vigentes</span>
+      <strong>Universidad de El Salvador</strong>
+      <span>Licenciatura en Psicología · 2025</span>
+    </div>
+  </div>
+</div>
+
+<!-- SOBRE MÍ -->
+<section id="sobre-mi">
+  <div class="about-grid">
+    <div class="about-photo-wrap reveal">
+      <div class="about-photo-box">
+        <!-- Reemplaza con: <img src="tu-foto.jpg" alt="Lic. Fernando Guzmán" /> -->
+        <div class="about-photo-placeholder">
+          <span>◉</span>
+          <span>Tu foto aquí</span>
+        </div>
+        <div class="about-photo-caption">
+          <p>"Cada sesión es una oportunidad de encontrar claridad."</p>
+        </div>
+      </div>
+      <div class="about-accent"></div>
+    </div>
+
+    <div class="about-text-col reveal">
+      <div class="sec-label">Carta de presentación</div>
+      <h2 class="sec-title">Fernando Enrique<br><em>Guzmán Figueroa</em></h2>
+      <div class="sec-rule"></div>
+
+      <p class="about-body">
+        Soy psicólogo clínico y comunitario egresado de la <strong>Universidad de El Salvador</strong>, 
+        con credencial y sello profesional vigentes. Mi práctica está fundamentada en el respeto profundo 
+        por cada persona que busca acompañamiento — entendiendo que cada historia es única y merece 
+        una atención genuinamente personalizada.
+      </p>
+      <p class="about-body">
+        En el <strong>Centro de Atención Psicosocial</strong> desarrollé una escucha clínica atenta: 
+        la capacidad de ir más allá de los síntomas para comprender qué hay detrás de cada experiencia. 
+        Aprendí a construir junto a mis pacientes planes terapéuticos que realmente tienen sentido en su vida.
+      </p>
+      <p class="about-body">
+        Mi experiencia con <strong>World Vision El Salvador</strong> y el <strong>Centro Escolar Pedro Geoffroy Rivas</strong> 
+        me enseñó que el acompañamiento psicológico requiere flexibilidad real — adaptar el lenguaje, 
+        el enfoque y el ritmo a cada persona, sin importar su contexto o su historia.
+      </p>
+
+      <div class="about-pull">
+        "Mi objetivo no es solo tratar síntomas. Es acompañarte en un proceso de autoconocimiento que tenga sentido en tu vida cotidiana."
+      </div>
+
+      <div class="about-tags">
+        <span class="tag">DSM-5</span>
+        <span class="tag">Evaluación psicométrica</span>
+        <span class="tag">Primeros auxilios psicológicos</span>
+        <span class="tag">Intervención en crisis</span>
+        <span class="tag">Terapia individual</span>
+        <span class="tag">Psicoeducación</span>
+        <span class="tag">Escucha activa</span>
+        <span class="tag">Ética profesional</span>
+      </div>
+
+      <div class="cred-row">
+        <div class="cred-item">
+          <span>Institución</span>
+          <p>Universidad de El Salvador</p>
+        </div>
+        <div class="cred-item">
+          <span>Egreso</span>
+          <p>2025 · Credencial vigente</p>
+        </div>
+        <div class="cred-item">
+          <span>Modalidad</span>
+          <p>Presencial & Virtual</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section id="servicios">
+  <div class="services-intro reveal">
+    <div>
+      <div class="sec-label">Áreas de atención</div>
+      <h2 class="sec-title">Servicios<br><em>terapéuticos</em></h2>
+    </div>
+    <p>Cada servicio está diseñado para responder a una necesidad específica. El punto de partida siempre es escuchar y comprender tu situación antes de trazar cualquier camino.</p>
+  </div>
+
+  <div class="services-grid">
+    <div class="service-card reveal">
+      <div class="service-num">01</div>
+      <h3>Terapia Individual</h3>
+      <p>Espacio confidencial para adultos que atraviesan ansiedad, depresión, duelo, estrés o cualquier dificultad emocional. Plan terapéutico construido a tu medida.</p>
+      <div class="service-meta">Sesión 50 min · Presencial o virtual</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">02</div>
+      <h3>Atención Infantil</h3>
+      <p>Evaluación psicopedagógica y acompañamiento conductual y emocional para niños. Incluye orientación a padres y coordinación con el entorno escolar cuando es necesario.</p>
+      <div class="service-meta">Sesión 45 min · Presencial o virtual</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">03</div>
+      <h3>Intervención en Crisis</h3>
+      <p>Atención inmediata ante situaciones de crisis emocional aguda. Aplicación de primeros auxilios psicológicos y estabilización para restablecer el equilibrio.</p>
+      <div class="service-meta">Urgente · Consultar disponibilidad</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">04</div>
+      <h3>Terapia Grupal</h3>
+      <p>Grupos terapéuticos y talleres psicoeducativos para comunidades, instituciones o grupos pequeños. Diseñados según las necesidades específicas del colectivo.</p>
+      <div class="service-meta">Por grupo · A convenir</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">05</div>
+      <h3>Evaluación Psicométrica</h3>
+      <p>Aplicación, corrección e interpretación de pruebas estandarizadas (DSM-5). Elaboración de informes técnicos para uso clínico, educativo o laboral.</p>
+      <div class="service-meta">Por evaluación · Consultar tarifa</div>
+    </div>
+    <div class="service-card reveal">
+      <div class="service-num">06</div>
+      <h3>Consulta en Línea</h3>
+      <p>Atención psicológica a distancia con la misma calidad y confidencialidad que la consulta presencial. Desde donde estés, con la plataforma que más te convenga.</p>
+      <div class="service-meta">Zoom o Google Meet · 50 min</div>
+    </div>
+  </div>
+</section>
+
+<!-- MODALIDAD VIRTUAL -->
+<section id="virtual">
+  <div class="virtual-grid">
+    <div class="virtual-text reveal">
+      <div class="sec-label">Atención en línea</div>
+      <h2 class="sec-title">Terapia<br><em>virtual</em></h2>
+      <div class="sec-rule"></div>
+      <p>La distancia no es un obstáculo para recibir acompañamiento profesional. La consulta virtual ofrece la misma confidencialidad, profundidad y calidad que una sesión presencial — desde la comodidad de tu espacio.</p>
+      <p>Trabajo a través de las plataformas más accesibles y seguras, adaptándome siempre a lo que sea más conveniente para ti.</p>
+
+      <div class="platform-cards">
+        <div class="platform-card">
+          <div class="platform-icon">📹</div>
+          <div>
+            <h4>Zoom</h4>
+            <p>Videollamada estable y privada. Te envío el enlace antes de la sesión, sin necesidad de cuenta.</p>
+          </div>
+        </div>
+        <div class="platform-card">
+          <div class="platform-icon">🟢</div>
+          <div>
+            <h4>Google Meet</h4>
+            <p>Acceso inmediato desde cualquier dispositivo. Solo necesitas el enlace que te compartiré.</p>
+          </div>
+        </div>
+        <div class="platform-card">
+          <div class="platform-icon">💬</div>
+          <div>
+            <h4>¿Otra plataforma?</h4>
+            <p>Si tienes preferencia por otra herramienta, lo conversamos. Me adapto a tu situación.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="virtual-visual reveal">
+      <div class="virtual-box">
+        <div class="virtual-box-title">¿Cómo funciona una sesión virtual?</div>
+        <div class="virtual-steps">
+          <div class="vstep">
+            <div class="vstep-num">i.</div>
+            <p><strong>Solicita tu cita</strong> por WhatsApp o correo. Acordamos día, hora y plataforma.</p>
+          </div>
+          <div class="vstep">
+            <div class="vstep-num">ii.</div>
+            <p><strong>Recibes el enlace</strong> de Zoom o Google Meet con anticipación. Solo necesitas un dispositivo con cámara.</p>
+          </div>
+          <div class="vstep">
+            <div class="vstep-num">iii.</div>
+            <p><strong>La sesión ocurre</strong> en un espacio privado y confidencial, con la misma presencia y atención que en persona.</p>
+          </div>
+          <div class="vstep">
+            <div class="vstep-num">iv.</div>
+            <p><strong>Al finalizar</strong>, acordamos el seguimiento y los próximos pasos según tu proceso.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HORARIOS -->
+<section id="horarios">
+  <div class="sec-label reveal">Agenda</div>
+  <h2 class="sec-title reveal">Horarios de<br><em>atención</em></h2>
+  <div class="sec-rule reveal"></div>
+
+  <div class="booking-layout">
+    <div class="reveal">
+      <div class="schedule-list">
+        <div class="sched-row">
+          <span class="sched-day">Lunes</span>
+          <span class="sched-time">8:00 am – 5:00 pm</span>
+          <span class="sched-badge badge-open">Disponible</span>
+        </div>
+        <div class="sched-row">
+          <span class="sched-day">Martes</span>
+          <span class="sched-time">8:00 am – 5:00 pm</span>
+          <span class="sched-badge badge-open">Disponible</span>
+        </div>
+        <div class="sched-row">
+          <span class="sched-day">Miércoles</span>
+          <span class="sched-time">8:00 am – 5:00 pm</span>
+          <span class="sched-badge badge-open">Disponible</span>
+        </div>
+        <div class="sched-row">
+          <span class="sched-day">Jueves</span>
+          <span class="sched-time">8:00 am – 5:00 pm</span>
+          <span class="sched-badge badge-open">Disponible</span>
+        </div>
+        <div class="sched-row">
+          <span class="sched-day">Viernes</span>
+          <span class="sched-time">8:00 am – 1:00 pm</span>
+          <span class="sched-badge badge-open">Disponible</span>
+        </div>
+        <div class="sched-row">
+          <span class="sched-day">Sábado</span>
+          <span class="sched-time">—</span>
+          <span class="sched-badge badge-closed">No disponible</span>
+        </div>
+        <div class="sched-row">
+          <span class="sched-day">Domingo</span>
+          <span class="sched-time">—</span>
+          <span class="sched-badge badge-closed">No disponible</span>
+        </div>
+      </div>
+      <div class="booking-note">
+        Los horarios son referenciales y pueden variar. Contáctame directamente para confirmar disponibilidad y acordar el horario que mejor se adapte a ti.
+      </div>
+    </div>
+
+    <div class="booking-form reveal">
+      <div class="booking-form-title">Solicitar una cita</div>
+      <p>Completa el formulario y me pondré en contacto contigo en menos de 24 horas.</p>
+      <form id="formCita" action="https://formspree.io/f/xeoqkojv" method="POST" onsubmit="handleSubmit(event, 'formCita', 'msgCita')">
+        <input type="hidden" name="_subject" value="Nueva solicitud de cita — Web Lic. Fernando Guzmán" />
+        <div class="fld"><label>Nombre completo *</label><input type="text" name="nombre" placeholder="Tu nombre" required /></div>
+        <div class="fld"><label>WhatsApp o correo *</label><input type="text" name="contacto" placeholder="+503 0000 0000 o correo@email.com" required /></div>
+        <div class="fld">
+          <label>Tipo de consulta *</label>
+          <select name="servicio" required>
+            <option value="">Selecciona un servicio</option>
+            <option>Terapia Individual</option>
+            <option>Atención Infantil</option>
+            <option>Intervención en Crisis</option>
+            <option>Terapia Grupal</option>
+            <option>Evaluación Psicométrica</option>
+            <option>Consulta Virtual (Zoom / Meet)</option>
+          </select>
+        </div>
+        <div class="fld">
+          <label>Modalidad preferida</label>
+          <select name="modalidad">
+            <option value="">Selecciona modalidad</option>
+            <option>Presencial — Santa Ana</option>
+            <option>Virtual — Zoom</option>
+            <option>Virtual — Google Meet</option>
+            <option>Sin preferencia</option>
+          </select>
+        </div>
+        <div class="fld"><label>Mensaje (opcional)</label><textarea name="mensaje" placeholder="Cuéntame brevemente en qué puedo ayudarte…"></textarea></div>
+        <button type="submit" class="btn-submit">Enviar solicitud →</button>
+        <p id="msgCita" class="form-feedback" style="display:none"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- HONORARIOS -->
+<section id="honorarios">
+  <div class="honor-grid">
+    <div class="honor-text reveal">
+      <div class="sec-label">Honorarios</div>
+      <h2 class="sec-title">Coordinación<br><em>de pago</em></h2>
+      <div class="sec-rule"></div>
+      <p>Los honorarios se coordinan directamente antes de la sesión. Mi prioridad es que el proceso terapéutico sea accesible — si tienes preguntas sobre tarifas o necesitas un acuerdo especial, hablemos sin compromiso.</p>
+      <p>Puedes contactarme por cualquiera de estos medios para consultar disponibilidad, tarifas y forma de pago.</p>
+
+      <div class="contact-options">
+        <a href="https://wa.me/50375337476" target="_blank" class="contact-option">
+          <div class="contact-option-icon">💬</div>
+          <div>
+            <h4>WhatsApp</h4>
+            <p>+503 7533 7476 — Respuesta rápida</p>
+          </div>
+        </a>
+        <a href="mailto:Licferguzman98@gmail.com" class="contact-option">
+          <div class="contact-option-icon">✉️</div>
+          <div>
+            <h4>Correo electrónico</h4>
+            <p>Licferguzman98@gmail.com</p>
+          </div>
+        </a>
+        <a href="tel:+50375337476" class="contact-option">
+          <div class="contact-option-icon">📞</div>
+          <div>
+            <h4>Llamada</h4>
+            <p>+503 7533 7476 — En horario de atención</p>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <div class="reveal">
+      <div class="honor-visual">
+        <div class="honor-visual-title">Servicios y estimación de tarifas</div>
+        <div class="honor-items">
+          <div class="honor-item">
+            <span>Terapia Individual (50 min)</span>
+            <span>Consultar</span>
+          </div>
+          <div class="honor-item">
+            <span>Atención Infantil (45 min)</span>
+            <span>Consultar</span>
+          </div>
+          <div class="honor-item">
+            <span>Consulta Virtual</span>
+            <span>Consultar</span>
+          </div>
+          <div class="honor-item">
+            <span>Evaluación Psicométrica</span>
+            <span>Consultar</span>
+          </div>
+          <div class="honor-item">
+            <span>Intervención en Crisis</span>
+            <span>Prioritario</span>
+          </div>
+          <div class="honor-item">
+            <span>Terapia Grupal / Talleres</span>
+            <span>A convenir</span>
+          </div>
+        </div>
+        <p class="honor-cta-note">Las tarifas se informan al momento de coordinar la cita. El costo nunca debería ser una barrera para buscar ayuda — conversemos.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="contact-grid">
+    <div class="contact-left reveal">
+      <div class="sec-label">Contacto</div>
+      <h2 class="sec-title">¿Hablamos<br><em>hoy?</em></h2>
+      <div class="sec-rule"></div>
+      <p>Dar el primer paso es lo más difícil. Si tienes dudas sobre si la terapia es para ti, o simplemente quieres conocer más, escríbeme sin compromiso.</p>
+      <div class="contact-details">
+        <div class="c-detail">
+          <div class="c-detail-icon">✉</div>
+          <div>
+            <span>Correo</span>
+            <a href="mailto:Licferguzman98@gmail.com">Licferguzman98@gmail.com</a>
+          </div>
+        </div>
+        <div class="c-detail">
+          <div class="c-detail-icon">☎</div>
+          <div>
+            <span>WhatsApp · Teléfono</span>
+            <a href="https://wa.me/50375337476">+503 7533 7476</a>
+          </div>
+        </div>
+        <div class="c-detail">
+          <div class="c-detail-icon">◎</div>
+          <div>
+            <span>Ubicación</span>
+            <p>Santa Ana, El Salvador</p>
+          </div>
+        </div>
+        <div class="c-detail">
+          <div class="c-detail-icon">⊙</div>
+          <div>
+            <span>Atención virtual</span>
+            <p>Zoom · Google Meet · A convenir</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="contact-form-wrap reveal">
+      <form id="formContacto" action="https://formspree.io/f/xeoqkojv" method="POST" onsubmit="handleSubmit(event, 'formContacto', 'msgContacto')">
+        <input type="hidden" name="_subject" value="Nuevo mensaje de contacto — Web Lic. Fernando Guzmán" />
+        <div class="fld"><label>Nombre *</label><input type="text" name="nombre" placeholder="Tu nombre completo" required /></div>
+        <div class="fld"><label>Correo electrónico *</label><input type="email" name="email" placeholder="tucorreo@email.com" required /></div>
+        <div class="fld"><label>Mensaje *</label><textarea name="mensaje" rows="6" placeholder="¿En qué puedo ayudarte? Escríbeme con confianza…" required></textarea></div>
+        <button type="submit" class="btn-submit">Enviar mensaje →</button>
+        <p id="msgContacto" class="form-feedback" style="display:none"></p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Lic. Fernando Guzmán</div>
+  <div class="footer-copy">© 2025 · Psicólogo Clínico y Comunitario · El Salvador</div>
+  <div class="footer-right">Credencial vigente · Atención ética y confidencial</div>
+</footer>
+
+<script>
+  // Nav scroll effect
+  const nav = document.getElementById('mainNav');
+  window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Reveal on scroll
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => entry.target.classList.add('visible'), i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Formspree handler — envía al correo y muestra confirmación
+  async function handleSubmit(e, formId, msgId) {
+    e.preventDefault();
+    const form = document.getElementById(formId);
+    const msg  = document.getElementById(msgId);
+    const btn  = form.querySelector('button[type="submit"]');
+
+    btn.disabled = true;
+    btn.textContent = 'Enviando…';
+    msg.style.display = 'none';
+    msg.className = 'form-feedback';
+
+    try {
+      const res = await fetch(form.action, {
+        method: 'POST',
+        body: new FormData(form),
+        headers: { 'Accept': 'application/json' }
+      });
+
+      if (res.ok) {
+        msg.textContent = '✓ Mensaje enviado correctamente. Te responderé pronto.';
+        msg.classList.add('success');
+        form.reset();
+      } else {
+        throw new Error();
+      }
+    } catch {
+      msg.textContent = '✕ Hubo un problema al enviar. Escríbeme directamente a licferguzman98@gmail.com';
+      msg.classList.add('error');
+      btn.disabled = false;
+      btn.textContent = 'Intentar de nuevo →';
+    }
+
+    msg.style.display = 'block';
+    if (msg.classList.contains('success')) {
+      btn.textContent = 'Enviado ✓';
+    }
+  }
+</script>
+</body>
+</html>
